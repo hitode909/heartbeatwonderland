@@ -12,7 +12,7 @@ class HeartBeatWonderLandApp < Sinatra::Base
   end
 
   before do
-    redirect to('/').sub(/https?/i, 'http'), 301 if request.scheme == 'https' && ENV['RACK_ENV'] == 'production'
+    redirect to('/').sub(/https?/i, 'https'), 301 if request.scheme == 'http' && ENV['RACK_ENV'] == 'production'
   end
 
   get '/' do
