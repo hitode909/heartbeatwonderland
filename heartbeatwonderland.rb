@@ -44,7 +44,7 @@ class HeartBeatWonderLandApp < Sinatra::Base
 
   get '/bpm/:bpm' do
     @bpm = params[:bpm].to_i
-    halt 400 unless @bpm > 0
+    halt 410, 'Gone...' unless @bpm > 0
 
     erb :bpm
   end
