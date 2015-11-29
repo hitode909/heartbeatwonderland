@@ -11,6 +11,10 @@ class HeartBeatWonderLandApp < Sinatra::Base
     end
   end
 
+  before do
+    redirect to('/').sub(/https?/i, 'http'), 301 if request.scheme == 'https' && ENV['RACK_ENV'] == 'production'
+  end
+
   get '/' do
     if session[:access_token]
       erb :index
