@@ -1,0 +1,15 @@
+<p>
+  Hi, <%= session[:user_name] %>
+</p>
+
+<div class="button-container">
+  <form method="GET" action="/bpm">
+    <button>
+      <i class="fa fa-heartbeat fa-5x">Measure</i>
+    </button>
+  </form>
+</div>
+
+<footer>
+  <a href="/logout"><small>(logout)</small></a>
+</footer>

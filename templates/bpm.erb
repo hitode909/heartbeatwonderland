@@ -1,0 +1,58 @@
+<h1><i class="fa fa-heartbeat fa-2x"></i>BPM<%= @bpm %></h1>
+
+<div class="button-container">
+  <a href="https://twitter.com/share" class="twitter-share-button"{count} data-text="🙋💓 BPM<%= @bpm %>" data-size="large" data-hashtags="heartbeatwonderland">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+<div id="player"></div>
+
+<script>
+  function googleApiClientReady () {
+    gapi.client.setApiKey('AIzaSyBG4CidaUXLQ2J4LSlYDkFrCMDYV3PWuMw');
+    gapi.client.load('youtube', 'v3', function() {
+      search();
+    });
+};
+
+function search() {
+  var request = gapi.client.youtube.search.list({
+    q: 'bpm <%= @bpm %> -metronome',
+    part: 'snippet'
+  });
+
+  request.execute(function(response) {
+    var video = response.items[0];
+      appendVideo(video);
+  });
+};
+
+function appendVideo(video) {
+  if (!video) return;
+
+  var container = document.querySelector('#player');
+
+  var videoId = video.id.videoId;
+  var iframe = document.createElement('iframe');
+  iframe.width = 459;
+  iframe.height = 344;
+  iframe.frameborder = 0;
+  iframe.src = '//www.youtube.com/embed/' + videoId;
+
+  var iframeContainer = document.createElement('div');
+  iframeContainer.appendChild(iframe);
+
+  container.appendChild(iframeContainer);
+
+  var link = document.createElement('a');
+  link.href = 'https://www.youtube.com/watch?v=' + videoId;
+  link.target = '_blank';
+  link.appendChild(document.createTextNode(video.snippet.title));
+
+  var linkContainer = document.createElement('div');
+  linkContainer.appendChild(link);
+  container.appendChild(linkContainer);
+}
+</script>
+
+<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
