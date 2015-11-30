@@ -31,15 +31,20 @@ class HeartBeatWonderLandApp < Sinatra::Base
   end
 
   get '/bpm' do
-    res = JSON.parse RestClient.get 'https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json', :Authorization => "Bearer #{session[:access_token]}"
-
     begin
-      value = res["activities-heart-intraday"]['dataset'].last['value']
-    rescue
-      value = res["activities-heart"][0]['value']['restingHeartRate']
-    end
+      res = JSON.parse RestClient.get 'https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json', :Authorization => "Bearer #{session[:access_token]}"
 
-    redirect to "/bpm/#{value}"
+      begin
+        value = res["activities-heart-intraday"]['dataset'].last['value']
+      rescue
+        value = res["activities-heart"][0]['value']['restingHeartRate']
+      end
+
+      redirect to "/bpm/#{value}"
+    rescue
+      session.clear
+      redirect to '/auth/fitbit_oauth2'
+    end
   end
 
   get '/bpm/:bpm' do
